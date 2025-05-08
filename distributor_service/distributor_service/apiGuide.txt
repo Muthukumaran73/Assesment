@@ -1,0 +1,76 @@
+API Integration Guide for Distributor Service
+=============================================
+
+Base URL:
+---------
+http://localhost:8000/api/
+
+1. Onboard a New Distributor
+----------------------------
+POST /api/distributors/
+
+Request Body:
+{
+  "name": "Acme Distributors",
+  "gst_number": "22AAAAA0000A1Z5",
+  "pan_number": "ABCDE1234F",
+  "bank_account_number": "123456789012",
+  "bank_ifsc": "SBIN0001234"
+}
+
+2. Update Distributor Details
+-----------------------------
+PUT /api/distributors/{id}/
+
+Request Body:
+{
+  "name": "Acme Updated",
+  "gst_number": "22AAAAA0000A1Z5",
+  "pan_number": "ABCDE1234F",
+  "bank_account_number": "987654321098",
+  "bank_ifsc": "ICIC0004321"
+}
+
+3. Record and Confirm a Payment
+-------------------------------
+POST /api/payments/
+
+Request Body:
+{
+  "distributor": 1,
+  "transaction_id": "TXN789456123",
+  "amount": "10000.00",
+  "status": "pending",
+  "metadata": {
+    "method": "UPI",
+    "payer": "rajesh@example.com"
+  }
+}
+
+4. Fetch All Distributors
+-------------------------
+GET /api/distributors/
+
+5. Fetch All Payments
+---------------------
+GET /api/payments/
+
+Integration Points
+==================
+
+SAP Integration:
+----------------
+- Use core/integrations/sap.py to send distributor/payment data via REST API or SFTP.
+- Example functions:
+    - sync_distributor_with_sap(data)
+    - sync_payment_with_sap(data)
+
+Cashfree Payment Confirmation:
+------------------------------
+- Simulated via confirm_payment_with_cashfree(transaction_id)
+- Replace with real API logic as needed.
+
+Authentication:
+---------------
+- APIs are open by default.
+- Add token or JWT authentication for production use.
